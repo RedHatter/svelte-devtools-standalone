@@ -2,27 +2,19 @@ import * as fs from 'fs'
 import svelte from 'rollup-plugin-svelte'
 import resolve from 'rollup-plugin-node-resolve'
 import css from 'rollup-plugin-css-only'
-import jscc from 'rollup-plugin-jscc'
 
-import format from './scripts/format.mjs'
+import format from './scripts/format.js'
+import importRawCss from './scripts/importRawCss.js'
 
 export default [{
   input: 'src/index.js',
-  external: ['chrome'],
   output: {
-    file: 'dest/devtools/bundle.js',
+    file: 'dist/standalone.js',
     name: 'App',
     format: 'iife',
-    globals: {
-      chrome: 'chrome'
-    }
   },
   plugins: [
     format(),
-    jscc({
-      asloader: false,
-      extensions: ['css', 'js', 'svelte']
-    }),
     svelte({
       preprocess: {
         markup: input => {
@@ -30,47 +22,13 @@ export default [{
             .replace(/(>|})\s+(?![^]*?<\/(?:script|style)>|[^<]*?>|[^{]*?})/g, '$1')
             .replace(/(?<!<[^>]*?|{[^}]*?)\s+(<|{)(?![^]*<\/(?:script|style)>)/g, '$1')
           return { code }
-        }
+        },
       },
     }),
     resolve(),
-    css({ output: 'styles.css' }),
+    importRawCss(),
+    css({ output: 'styles.css' })
   ]
-}, {
-  input: 'src/background.js',
-  output: {
-    file: 'dest/background.js'
-  },
-  plugins: [
-    format(),
-    jscc({
-      asloader: false,
-      extensions: ['css', 'js', 'svelte']
-    }),
-  ]
-},{
-  input: 'src/client/index.js',
-  output: {
-    file: 'dest/privilegedContent.js',
-    name: 'SvelteDevtools',
-    format: 'iife',
-    banner: `if (!window.tag) {
-  window.tag = document.createElement('script')
-  window.tag.text = \``,
-    footer: `\`
-  if (window.profilerEnabled) window.tag.text = window.tag.text.replace('let profilerEnabled = false;', '\$&\\nstartProfiler();')
-  document.children[0].append(window.tag)
-  const port = chrome.runtime.connect()
-  port.onMessage.addListener(window.postMessage.bind(window))
-  window.addEventListener(
-    'message',
-    e => e.source == window && port.postMessage(e.data),
-    false
-  )
-  window.addEventListener('unload', () => port.postMessage({ type: 'clear' }))
-}`
-  },
-  plugins: [ resolve() ]
 }, {
   input: 'test/src/index.js',
   output: {

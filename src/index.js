@@ -1,14 +1,26 @@
-import './base.css'
-import { devtools } from 'chrome'
-import App from './App.svelte'
+import * as hooks from './hook'
+import './ui/base.css'
+import App from './ui/App.svelte'
+// workaround for sveltejs/svelte#5870
+import rawStyles from 'virtual-css-import'
 
-function setDarkMode(theme) {
-  if (theme == 'dark') document.body.classList.add('dark')
-  else document.body.classList.remove('dark')
+const ref = window.open('', null, 'location=off')
+
+while (ref.document.head.firstChild) {
+  ref.document.head.removeChild(ref.document.head.firstChild)
 }
 
-setDarkMode(devtools.panels.themeName)
-if (devtools.panels.onThemeChanged)
-  devtools.panels.onThemeChanged.addListener(setDarkMode)
+while (ref.document.body.firstChild) {
+  ref.document.body.removeChild(ref.document.body.firstChild)
+}
 
-new App({ target: document.body })
+const style = ref.document.createElement('style')
+style.innerHTML = rawStyles
+ref.document.head.append(style)
+
+new App({
+  target: ref.document.body,
+  props: {
+    hooks,
+  },
+})

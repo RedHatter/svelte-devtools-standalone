@@ -10,6 +10,7 @@
 </script>
 
 <div>
-  A component with string, number, array, and object attributes. The value is
+  A component with string ({string}), number ({number}), boolean ({boolean}),
+  array ({array}), and object ({object}) attributes. The value variable is
   {value}
 </div>
