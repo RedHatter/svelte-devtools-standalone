@@ -10,7 +10,7 @@ export default [{
   input: 'src/index.js',
   output: {
     file: 'dist/standalone.js',
-    name: 'App',
+    name: 'SvelteDevTools',
     format: 'iife',
   },
   plugins: [
@@ -33,7 +33,7 @@ export default [{
   input: 'test/src/index.js',
   output: {
     file: 'test/public/bundle.js',
-    name: 'App',
+    name: 'SvelteDevToolsTest',
     format: 'iife'
   },
   plugins: [

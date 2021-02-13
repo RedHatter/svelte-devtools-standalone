@@ -1,6 +1,6 @@
 <script>
   import { selectedNode } from '../store.js'
-  import { getContext } from '../App.svelte'
+  import { getContext } from '../SvelteDevToolsUi.svelte'
   import Button from './Button.svelte'
 
   const { pickNode } = getContext()

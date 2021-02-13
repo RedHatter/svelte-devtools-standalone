@@ -1,5 +1,5 @@
 <script>
-  import { getContext } from '../App.svelte'
+  import { getContext } from '../SvelteDevToolsUi.svelte'
   import CollapsableValue from './CollapsableValue.svelte'
 
   const { injectState } = getContext()

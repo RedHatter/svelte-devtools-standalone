@@ -1,5 +1,5 @@
 <script>
-  import { getContext } from '../App.svelte'
+  import { getContext } from '../SvelteDevToolsUi.svelte'
   import { selectedNode } from '../store.js'
   import Panel from './Panel.svelte'
   import Toolbar from '../toolbar/Toolbar.svelte'
