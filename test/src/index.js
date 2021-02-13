@@ -1,4 +1,4 @@
 import '../../dist/standalone.js'
-import SvelteDevToolsUi from '../../src/ui'
+import App from './App.svelte'
 
-new SvelteDevToolsUi({ target: document.body })
+new App({ target: document.body })
