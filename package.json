@@ -2,7 +2,7 @@
   "name": "svelte-devtools-standalone",
   "version": "1.3.0",
   "description": "A tool for debugging Svelte applications.",
-  "main": "./src/ui/index.js",
+  "main": "./dist/standalone.js",
   "repository": "github:RedHatter/svelte-devtools-standalone",
   "license": "MIT",
   "scripts": {
