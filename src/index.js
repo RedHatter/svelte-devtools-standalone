@@ -6,21 +6,27 @@ import rawStyles from 'virtual-css-import'
 
 const ref = window.open('', null, 'location=off')
 
-while (ref.document.head.firstChild) {
-  ref.document.head.removeChild(ref.document.head.firstChild)
+if (ref == null) {
+  console.error(
+    'Unable to open the Svelte DevTools window. Please verify that the page is not blocking pop-ups.'
+  )
+} else {
+  while (ref.document.head.firstChild) {
+    ref.document.head.removeChild(ref.document.head.firstChild)
+  }
+
+  while (ref.document.body.firstChild) {
+    ref.document.body.removeChild(ref.document.body.firstChild)
+  }
+
+  const style = ref.document.createElement('style')
+  style.innerHTML = rawStyles
+  ref.document.head.append(style)
+
+  new SvelteDevToolsUi({
+    target: ref.document.body,
+    props: {
+      hooks,
+    },
+  })
 }
-
-while (ref.document.body.firstChild) {
-  ref.document.body.removeChild(ref.document.body.firstChild)
-}
-
-const style = ref.document.createElement('style')
-style.innerHTML = rawStyles
-ref.document.head.append(style)
-
-new SvelteDevToolsUi({
-  target: ref.document.body,
-  props: {
-    hooks,
-  },
-})
